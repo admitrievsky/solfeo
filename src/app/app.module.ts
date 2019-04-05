@@ -6,6 +6,7 @@ import { AppComponent } from './components/app/app.component';
 import { MenuComponent } from './components/menu/menu.component';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { IntervalsModule } from './modules/intervals/intervals.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatToolbarModule
+    MatToolbarModule,
+    IntervalsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
