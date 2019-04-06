@@ -24,12 +24,17 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              { "glob": "**/*",
+                "input": "src/vendor/tonejs-instruments/samples",
+                "output": "/samples/" }
             ],
             "styles": [
               "src/styles.less"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/tone/build/Tone.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -86,7 +91,9 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/tone/build/Tone.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
