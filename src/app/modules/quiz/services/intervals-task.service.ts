@@ -1,9 +1,10 @@
-import { TaskService } from '../../quiz/services/task.service';
-import { of, Observable } from 'rxjs';
-import { Note } from '../../quiz/models/note';
-import { Task } from '../../quiz/models/task';
+import { TaskService } from './task.service';
+import { Observable, timer, of, throwError } from 'rxjs';
+import { take, switchMap, tap, last } from 'rxjs/operators';
+import { Note } from '../models/note';
+import { Task } from '../models/task';
 import { Injectable } from '@angular/core';
-import { SoundService } from '../../quiz/services/sound.service';
+import { SoundService } from './sound.service';
 
 class IntervalTask extends Task {
   from: Note[];
@@ -65,12 +66,15 @@ export class IntervalsTask extends TaskService {
   play(): Observable<null> {
     const task = this._task.value as IntervalTask;
     if(task) {
-      task.from.forEach(note => this.soundService.play(note));
-      window.setTimeout(
-        () => task.to.forEach(note => this.soundService.play(note)),
-        1000
+      return timer(0, 1000).pipe(
+        take(2),
+        tap(n => {
+          task[n ? 'to': 'from'].forEach(note => this.soundService.play(note));
+        }),
+        last(),
+        switchMap(() => of(null))
       );
     }
-    return of(null);
+    return throwError('Error generating task');
   }
 }
