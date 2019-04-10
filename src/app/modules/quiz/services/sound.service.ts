@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { SampleLibrary } from 'src/vendor/tonejs-instruments/Tonejs-instruments.js'
 import { Note } from '../models/note';
 
@@ -9,13 +9,23 @@ import { Note } from '../models/note';
 export class SoundService {
   piano: any;
 
+  private loading = false;
+  private loaded = false;
+
   init(): Observable<boolean> {
-    this.piano = SampleLibrary.load({
-      instruments: "piano"
-    });
-    this.piano.toMaster();
+    if (this.loaded) {
+      return of(true);
+    }
+    if (!this.loading) {
+      this.piano = SampleLibrary.load({
+        instruments: "piano"
+      });
+      this.piano.toMaster();
+      this.loading = true;
+    }
     return new Observable<boolean>(observer => {
       Tone.Buffer.on('load', () => {
+        this.loaded = true;
         observer.next(true);
         observer.complete();
       });
