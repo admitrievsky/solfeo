@@ -1,6 +1,6 @@
 import { TaskService } from './task.service';
-import { Observable, timer, of, throwError } from 'rxjs';
-import { take, switchMap, tap, last } from 'rxjs/operators';
+import { Observable, timer, throwError } from 'rxjs';
+import { take, switchMap, tap, last, map } from 'rxjs/operators';
 import { Note } from '../models/note';
 import { Task } from '../models/task';
 import { Injectable } from '@angular/core';
@@ -42,6 +42,10 @@ class IntervalTask extends Task {
     }
     return true;
   }
+
+  toString() {
+    return this.name;
+  }
 }
 
 @Injectable({
@@ -72,7 +76,9 @@ export class IntervalsTask extends TaskService {
           task[n ? 'to': 'from'].forEach(note => this.soundService.play(note));
         }),
         last(),
-        switchMap(() => of(null))
+        switchMap(() => timer(1000, 1000).pipe(
+          take(1),
+          map(()=> null)))
       );
     }
     return throwError('Error generating task');

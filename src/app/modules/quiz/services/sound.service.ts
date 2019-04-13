@@ -32,7 +32,7 @@ export class SoundService {
     });
   }
 
-  play(note: Note, length: string='1n') {
+  play(note: Note, length: string='2n') {
     this.piano.triggerAttackRelease(note.toString(), length);
   }
 }

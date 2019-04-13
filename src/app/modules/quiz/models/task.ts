@@ -1,1 +1,3 @@
-export class Task {}
+export abstract class Task {
+  abstract toString(): string;
+}

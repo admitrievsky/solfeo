@@ -1,15 +1,40 @@
 <ng-container [ngSwitch]="state">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-title>
+        <mat-icon class="hits">favorite</mat-icon><span>: {{ hits }}</span>
+        <mat-icon class="misses">sentiment_very_dissatisfied</mat-icon><span>:{{ misses }}</span>
+      </mat-card-title>
+      <mat-card-subtitle>
+          {{ quote }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngSwitchCase="States.loading">
+        <mat-spinner></mat-spinner>
+      </div>
 
-  <div *ngSwitchCase="States.loading">
-    <mat-spinner></mat-spinner>
-  </div>
+      <div *ngSwitchCase="States.init">
+        <button mat-flat-button color="primary" (click)="play()">Проиграть</button>
+      </div>
 
-  <div *ngSwitchCase="States.init">
-    <button mat-flat-button color="primary" (click)="play()">Проиграть</button>
-  </div>
-
-  <div *ngSwitchCase="States.playing">
-    <mat-spinner></mat-spinner>
-  </div>
-
+      <div *ngSwitchCase="States.playing">
+        <img src="/assets/notes.svg" width="100px">
+      </div>
+      <div *ngSwitchCase="States.waitingForAnswer">
+        {{ taskText }}
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div *ngSwitchCase="States.waitingForAnswer" class="answer">
+        <button mat-fab (click)="increaseMisses()">
+          <mat-icon>sentiment_very_dissatisfied</mat-icon>
+        </button>
+        <button mat-fab (click)="increaseHits()">
+            <mat-icon>favorite</mat-icon>
+          </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
 </ng-container>
